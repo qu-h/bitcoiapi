@@ -10,6 +10,7 @@ class Ticker extends REST_Controller
 
     public function bitcoin_get(){
         $coin = $this->CoinMarketCap_Model->bitcoin_latest();
+        $coin = array($coin);
         if( empty($coin) ){
             $this->response([
                 'status' => FALSE,
