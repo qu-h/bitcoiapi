@@ -5,7 +5,7 @@ class Market extends REST_Controller
     function __construct()
     {
         parent::__construct();
-        $this->methods['bitcoin_get']['limit'] = 20;
+        
     }
 
     public function update_get()
@@ -58,7 +58,14 @@ class Market extends REST_Controller
     }
 
     public function bitcoin_get(){
-        $coin = $this->CoinMarketCap_Model->market_items("bitcoin");
+        $page = $this->input->get("page");
+        $limit = intval($this->input->get("limit"));
+
+        if( $limit < 1 ){
+
+            $limit = 20;
+        }
+        $coin = $this->CoinMarketCap_Model->market_items("bitcoin",$page, $limit);
         if( empty($coin) ){
             $this->response([
                 'status' => FALSE,

@@ -110,11 +110,20 @@ class CoinMarketCap_Model extends CI_Model
         }
     }
 
-    public function market_items($currency_code="bitcoin"){
+    public function market_items($currency_code="bitcoin",$page=1,$limit = 30){
+        if( $page < 1 ){
+            $page = 1;
+        }
         $this->db->where("currency",$currency_code);
 
-        $this->db->limit($this->page_limit);
-        return $this->db->get($this->market_tbl)->result();
+        $this->db->limit($limit, $limit*($page-1));
+
+        $this->db->select("*");
+        
+
+        $data = $this->db->get($this->market_tbl);
+
+        return $data->result();;
     }
 
     public function history_update($data){
