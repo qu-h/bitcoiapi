@@ -100,12 +100,10 @@ class CoinMarketCap_Model extends CI_Model
             return $this->db->insert_id();
         } else {
             $old_data = $query->row();
-            if( floatval($old_data->volume_24_usd) != floatval($data["volume_24_usd"]) ){
-                $data["modified"] = date( 'Y-m-d H:i:s');
-                $this->db->where("source",$data["source"])
-                    ->where("pair",$data["pair"])
-                    ->update($this->market_tbl,$data);
-            }
+            $data["modified"] = date( 'Y-m-d H:i:s');
+            $this->db->where("source",$data["source"])
+                ->where("pair",$data["pair"])
+                ->update($this->market_tbl,$data);
             return $old_data->id;
         }
     }

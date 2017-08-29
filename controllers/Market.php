@@ -12,7 +12,7 @@ class Market extends REST_Controller
     {
         $this->load->library('Simple_html_dom');
 
-        $url = "https://coinmarketcap.com/currencies/bitcoin/historical-data/";
+        $url = "https://coinmarketcap.com/currencies/bitcoin/#markets";
         $html = file_get_html($url);
 
         foreach($html->find("table",0)->find('tr') as $row) {
