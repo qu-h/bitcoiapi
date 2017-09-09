@@ -14,15 +14,16 @@ class Market extends REST_Controller
 
         $url = "https://coinmarketcap.com/currencies/bitcoin/#markets";
         $html = file_get_html($url);
-
-        foreach($html->find("table",0)->find('tr') as $row) {
+        $this->CoinMarketCap_Model->bitcoin_market_reset_order();
+        foreach($html->find("table",0)->find('tr') as $line_num=>$row) {
             if( !$row->find('td',0) ){
                 continue;
             }
 
-            $rowData = array();
+            $rowData = ["order"=>$line_num,"currency"=>"bitcoin"];
+
             foreach($row->find('td') as $col_index => $cell) {
-                $rowData["order"] = $col_index + 1;
+               
                 switch ($col_index){
                     case 1:
                         $rowData["source"] = $cell->plaintext; break;
@@ -48,8 +49,10 @@ class Market extends REST_Controller
                         break;
                 }
             }
-            $rowData["currency"] = "bitcoin";
-            $this->CoinMarketCap_Model->bitcoin_market_update($rowData);
+            if( isset($rowData["update_status"]) && strlen($rowData["update_status"]) > 0){
+                $this->CoinMarketCap_Model->bitcoin_market_update($rowData);    
+            }
+            
         }
 
         $this->response([
