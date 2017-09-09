@@ -15,12 +15,12 @@ class Market extends REST_Controller
         $url = "https://coinmarketcap.com/currencies/bitcoin/#markets";
         $html = file_get_html($url);
         $this->CoinMarketCap_Model->bitcoin_market_reset_order();
-        foreach($html->find("table",0)->find('tr') as $line_num=>$row) {
+        foreach($html->find("table",0)->find('tr') as $line_num => $row) {
             if( !$row->find('td',0) ){
                 continue;
             }
 
-            $rowData = ["order"=>$line_num,"currency"=>"bitcoin"];
+            $rowData = [ "order"=>$line_num, "currency"=>"bitcoin" ];
 
             foreach($row->find('td') as $col_index => $cell) {
                

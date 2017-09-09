@@ -85,8 +85,8 @@ class CoinMarketCap_Model extends CI_Model
     }
 
     public function bitcoin_market_reset_order(){
-        $this->db-->update($this->market_tbl, ['order'=>0] );
-            return true;
+        $this->db->update($this->market_tbl, ['order'=>0] );
+        return true;
     }
 
     public function bitcoin_market_update($data)
