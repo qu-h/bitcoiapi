@@ -49,6 +49,7 @@ class Market extends REST_Controller
                         break;
                 }
             }
+            
             if( isset($rowData["update_status"]) && strlen($rowData["update_status"]) > 0){
                 $this->CoinMarketCap_Model->bitcoin_market_update($rowData);    
             }
