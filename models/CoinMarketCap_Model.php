@@ -84,6 +84,11 @@ class CoinMarketCap_Model extends CI_Model
         return $this->db->limit($limit)->get()->result();
     }
 
+    public function bitcoin_market_reset_order(){
+        $this->db-->update($this->market_tbl, ['order'=>0] );
+            return true;
+    }
+
     public function bitcoin_market_update($data)
     {
         if( !is_array($data) || empty($data) || !array_key_exists("source",$data) || !array_key_exists("pair",$data) ){
@@ -109,17 +114,21 @@ class CoinMarketCap_Model extends CI_Model
     }
 
     public function market_items($currency_code="bitcoin",$page=1,$limit = 30){
+        
         if( $page < 1 ){
             $page = 1;
         }
         $this->db->where("currency",$currency_code);
+        $this->db->where("order >",0);
 
         $this->db->limit($limit, $limit*($page-1));
 
-        $this->db->select("*");
+        $this->db->select("*")
+                ->select("ROUND(price_usd, 2) AS price")
+        ;
         
 
-        $data = $this->db->get($this->market_tbl);
+        $data = $this->db->order_by("order ASC")->get($this->market_tbl);
 
         return $data->result();;
     }

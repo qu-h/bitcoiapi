@@ -22,6 +22,7 @@ class Market extends REST_Controller
 
             $rowData = array();
             foreach($row->find('td') as $col_index => $cell) {
+                $rowData["order"] = $col_index + 1;
                 switch ($col_index){
                     case 1:
                         $rowData["source"] = $cell->plaintext; break;
