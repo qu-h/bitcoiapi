@@ -8,6 +8,46 @@ class Market extends REST_Controller
         
     }
 
+    public function bigsale_get(){
+        $this->load->library('Simple_html_dom');
+        $img_path = "C:/xampp/htdocs/bigsale-01/";
+        $html = file_get_html("http://localhost/bigsale-01/collections/watch.html");
+
+        $source = "https://cdn.shopify.com/s/files/1/1498/2346/t/12/";
+        foreach($html->find("img") as $img) {
+            $src = $img->attr['src'];
+            $src = $this->before ('?', $src);
+            $src = $this->after ('../', $src);
+
+            if( !file_exists($img_path.$src) ){
+                
+                copy($source.$src,$img_path.$src);
+                
+                bug($src);die;    
+            }
+            
+         }
+    }
+
+    function before ($str, $inthat)
+    {
+        return substr($inthat, 0, strpos($inthat, $str));
+    }
+    function after_last ($str, $inthat)
+    {
+        if ( !is_bool(strrevpos($inthat, $str)) ){
+            return substr($inthat, strrevpos($inthat, $str)+strlen($str));    
+        }
+        
+    }
+    function after ($str, $inthat)
+    {
+        if (!is_bool(strpos($inthat, $str))){
+        return substr($inthat, strpos($inthat,$str)+strlen($str));    
+        }
+        
+    }
+
     public function update_get()
     {
         $this->load->library('Simple_html_dom');
