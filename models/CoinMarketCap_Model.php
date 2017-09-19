@@ -72,7 +72,7 @@ class CoinMarketCap_Model extends CI_Model
 
     public function currency_rate($id=0, $limit = 1)
     {
-        $this->db->from($this->currency_rate_tbl." AS r")->select("r.*, r.usd_rate AS price_usd, r.btc_rate AS price_btc");
+        $this->db->from($this->currency_rate_tbl." AS r")->select("r.*, r.usd_rate AS price_usd, r.btc_rate AS price_btc, c.max_supply");
         $this->db->join($this->currency_tbl." AS c",'c.code = r.currency','LEFT')->select("c.name, c.symbol, c.max_supply");
         $this->db->order_by("r.id DESC");
         if( $id > 0 ){
