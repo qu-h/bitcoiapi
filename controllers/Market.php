@@ -10,10 +10,11 @@ class Market extends REST_Controller
 
     public function bigsale_get(){
         $this->load->library('Simple_html_dom');
-        $img_path = "C:/xampp/htdocs/bigsale-01/";
-        $html = file_get_html("http://localhost/bigsale-01/collections/watch.html");
+        $img_path = "F:/PHP/xampp/htdocs/myshopify-template/bigsale-01/";
+        $file = "pages/product-item.html";
+        $html = file_get_html($img_path.$file);
 
-        $source = "https://cdn.shopify.com/s/files/1/1498/2346/t/12/";
+        $source = "http://cdn.shopify.com/s/files/1/1498/2346/";
         foreach($html->find("img") as $img) {
             $src = $img->attr['src'];
             $src = $this->before ('?', $src);
@@ -23,10 +24,29 @@ class Market extends REST_Controller
                 
                 copy($source.$src,$img_path.$src);
                 
-                bug($src);die;    
+                //bug($img_path.$src);die;
             }
             
-         }
+        }
+
+
+        $link_remove = [
+            '/collections/fashion',
+            '/collections/all/fashion',
+            '/collections/all/computer',
+            '/collections/all/mobile',
+            '/collections/all/smart',
+            '/collections/all/furniture',
+            '/collections/all/homeware',
+            '/collections/all/sport',
+        ];
+        foreach($html->find("a") as $a) {
+            if( in_array($a->attr['href'],$link_remove)){
+                $a->attr['href'] = "#";
+            }
+        }
+        $html->save($img_path.$file);
+        die("end check");
     }
 
     function before ($str, $inthat)
